@@ -110,34 +110,23 @@ canvas.height = innerHeight;
 
 // Calculates and returns the distance bewteen two points
 function distance(x1, y1, x2, y2) {
-				var xDist = x2 - x1;
-				var yDist = y2 - y1;
+	var xDist = x2 - x1;
+	var yDist = y2 - y1;
 
-				return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+	return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }
 
 // Defines our mouse object which will be attached to x and y
 // coordinates on a 'mousemove' event listener
 var mouse = {
-				x: undefined,
-				y: undefined
+	x: undefined,
+	y: undefined
 };
 
 var TWO_PI = Math.PI * 2;
 var centerX = innerWidth / 2;
 var centerY = innerHeight / 2;
 var focalLength = 400;
-
-// Stars variables
-// let radius = 1;
-// let starX = null;
-// let starY = null;
-// let starRadius = null;
-// let starX_dir = 0;
-// let starY_dir = 0;
-// let numStar = 2000;
-// let stars = [];
-
 
 // Zoom in
 // canvas.addEventListener('mousewheel', function (event) {
@@ -170,16 +159,16 @@ var focalLength = 400;
 // })
 
 addEventListener('mousemove', function (event) {
-				mouse.x = event.x;
-				mouse.y = event.y;
+	mouse.x = event.x;
+	mouse.y = event.y;
 });
 
 // Shooter, green circle attached to mouse
 function tacoTruck() {
-				c.beginPath();
-				c.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2);
-				c.fillStyle = "green";
-				c.fill();
+	c.beginPath();
+	c.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2);
+	c.fillStyle = "green";
+	c.fill();
 }
 
 // Stars
@@ -188,86 +177,150 @@ var stars = [];
 
 // Constructor function for stars background
 function Star(x, y, z) {
-				this.x = x;
-				this.y = y;
-				this.z = z;
-				this.dy = 0;
-				this.dx = 0;
-				this.dz = -20;
-				this.radius = 1;
-				this.color = "#fff";
-				this.starRadius = undefined;
-				this.starX = undefined;
-				this.starY = undefined;
+	this.x = x;
+	this.y = y;
+	this.z = z;
+	this.dx = 0;
+	this.dy = 0;
+	this.dz = -20;
+	this.radius = 1;
+	this.color = "#fff";
+	this.starRadius = undefined;
+	this.starX = undefined;
+	this.starY = undefined;
 }
 
 // Function that draws the stars
 Star.prototype.draw = function () {
-				c.beginPath();
-				c.arc(this.starX, this.starY, this.starRadius, TWO_PI, false);
-				c.fillStyle = this.color;
-				c.fill();
-				c.closePath();
+	c.beginPath();
+	c.arc(this.starX, this.starY, this.starRadius, TWO_PI, false);
+	c.fillStyle = this.color;
+	c.fill();
+	c.closePath();
 };
 
 // Adds travel and depth to stars with focal length formula
 Star.prototype.update = function () {
-				this.draw();
+	this.draw();
 
-				this.starX = (this.x - centerX) * (focalLength / this.z);
-				this.starX += centerX;
+	this.starX = (this.x - centerX) * (focalLength / this.z);
+	this.starX += centerX;
 
-				this.starY = (this.y - centerY) * (focalLength / this.z);
-				this.starY += centerY;
+	this.starY = (this.y - centerY) * (focalLength / this.z);
+	this.starY += centerY;
 
-				this.starRadius = this.radius * (focalLength / this.z);
+	this.starRadius = this.radius * (focalLength / this.z);
 
-				// Adds slight movement of stars background
-				// upon mousemove
-				this.starX += this.dx;
-				this.starY += this.dy;
+	// Adds slight movement of stars background
+	// upon mousemove
+	this.starX += this.dx;
+	this.starY += this.dy;
 
-				// Makes stars move "into space"
-				this.z += this.dz;
+	// Makes stars move "into space"
+	this.z += this.dz;
 
-				// Redirects stars to start over
-				if (this.z <= 0) {
-								this.z = parseInt(innerWidth);
-				}
+	// Redirects stars to start over
+	if (this.z <= 0) {
+		this.z = parseInt(innerWidth);
+	}
 };
 
 // X, Y, Z Values for stars
 // stars get pushed into stars array
 for (var i = 0; i < numStar; i++) {
-				var x = Math.random() * innerWidth;
-				var y = Math.random() * innerWidth;
-				var z = Math.random() * innerWidth;
-				stars.push(new Star(x, y, z));
+	var x = Math.random() * innerWidth;
+	var y = Math.random() * innerWidth;
+	var z = Math.random() * innerWidth;
+	stars.push(new Star(x, y, z));
 }
 // End stars
 
 
+// Bullets
+// let bulletX = null;
+// let bulletY = null;
+
+
+// // Constructor function for bullets to be shot from the mouse
+function Bullet(x, y, z) {
+	this.x = x;
+	this.y = y;
+	this.z = z;
+	this.dx = 0;
+	this.dy = 0;
+	this.dz = 75;
+	this.radius = 20;
+	this.color = "yellow";
+	this.bulletRadius = undefined;
+	this.bulletX = undefined;
+	this.bulletY = undefined;
+
+	// 	// Function that draws the bullet
+	this.draw = function () {
+		c.beginPath();
+		c.arc(this.bulletX, this.bulletY, this.bulletRadius, TWO_PI, false);
+		c.fillStyle = this.color;
+		c.fill();
+		c.closePath();
+	};
+
+	// 	// Adds travel and depth to bullets with focal length formula
+	this.update = function () {
+		this.draw();
+
+		this.bulletX = (this.x - centerX) * (focalLength / this.z);
+		this.bulletX += centerX;
+
+		this.bulletY = (this.y - centerY) * (focalLength / this.z);
+		this.bulletY += centerY;
+
+		this.bulletRadius = this.radius * (focalLength / this.z);
+
+		// 		// Makes bullet move "into space"
+		this.z += this.dz;
+
+		// 		// Detects collision between bullets and monsters
+		// 		// Monsters turn orange upon collision
+		// if (distance(this.x, this.y, monster1.x, monster1.y) < 100 && (this.z - monster1.z) >= 0) {
+		//     monster1.color = "orange";
+		// }
+	};
+}
+
+// bullets array that holds bullets fired from the mouse click
+// bullets.update() gets called in the animate function on canvas.js
+var bullets = [];
+
+// // Upon mouse click bullets are fired from the mouse into "space"
+window.addEventListener('click', function () {
+	bullets.push(new Bullet(mouse.x, mouse.y, 100));
+});
+
+// End Bullets
+
+
 // function to animate objects
 function animate() {
-				requestAnimationFrame(animate);
-				c.fillStyle = "#000";
-				c.fillRect(0, 0, innerWidth, innerHeight);
+	requestAnimationFrame(animate);
+	c.fillStyle = "#000";
+	c.fillRect(0, 0, innerWidth, innerHeight);
 
-				// Draws Stars
-				for (var _i in stars) {
-								stars[_i].update();
-				}
+	// Draws Stars
+	for (var _i in stars) {
+		stars[_i].update();
+	}
 
-				// function starShip draws green circle attached to mouse
-				tacoTruck();
+	// function starShip draws green circle attached to mouse
+	tacoTruck();
 
-				// for (let i = 0; i < bullets.length; i++) {
-				// 	bullets[i].update();
-				// }
+	// Shoots bullets
+	for (var _i2 = 0; _i2 < bullets.length; _i2++) {
+		bullets[_i2].update();
+	}
 
-				// for (let i = 0; i < monsters.length; i++) {
-				// 	monsters[i].update();
-				// }
+	// for (let i = 0; i < monsters.length; i++) {
+	// 	monsters[i].update();
+	// }
 }
 
 animate();

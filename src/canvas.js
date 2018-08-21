@@ -30,15 +30,7 @@ let centerX = innerWidth / 2;
 let centerY = innerHeight / 2;
 let focalLength = 400
 
-// Stars variables
-// let radius = 1;
-// let starX = null;
-// let starY = null;
-// let starRadius = null;
-// let starX_dir = 0;
-// let starY_dir = 0;
-// let numStar = 2000;
-// let stars = [];
+
 
 
 
@@ -106,8 +98,8 @@ function Star(x, y, z) {
     this.x = x;
     this.y = y;
 	this.z = z;
-	this.dy = 0
 	this.dx = 0
+	this.dy = 0
 	this.dz = -20
     this.radius = 1;
 	this.color = "#fff"
@@ -167,12 +159,85 @@ for (let i = 0; i < numStar; i++) {
 
 
 
+// Bullets
+// let bulletX = null;
+// let bulletY = null;
+
+
+
+// // Constructor function for bullets to be shot from the mouse
+function Bullet(x, y, z) {
+    this.x = x;
+    this.y = y;
+	this.z = z;
+	this.dx = 0;
+	this.dy = 0;
+	this.dz = 75;
+    this.radius = 20;
+	this.color = "yellow"
+	this.bulletRadius = undefined
+	this.bulletX = undefined
+	this.bulletY = undefined
+
+
+// 	// Function that draws the bullet
+	this.draw = function() {
+		c.beginPath();
+		c.arc(this.bulletX, this.bulletY, this.bulletRadius, TWO_PI, false);
+		c.fillStyle = this.color;
+		c.fill();
+		c.closePath();
+	}
+
+// 	// Adds travel and depth to bullets with focal length formula
+    this.update = function () {
+		this.draw();
+
+        this.bulletX = (this.x - centerX) * (focalLength / this.z)
+        this.bulletX += centerX;
+
+        this.bulletY = (this.y - centerY) * (focalLength / this.z)
+        this.bulletY += centerY;
+
+        this.bulletRadius = this.radius * (focalLength / this.z);
+
+// 		// Makes bullet move "into space"
+       	this.z += this.dz;
+
+
+
+// 		// Detects collision between bullets and monsters
+// 		// Monsters turn orange upon collision
+        // if (distance(this.x, this.y, monster1.x, monster1.y) < 100 && (this.z - monster1.z) >= 0) {
+        //     monster1.color = "orange";
+        // }
+    }
+
+}
+
+// bullets array that holds bullets fired from the mouse click
+// bullets.update() gets called in the animate function on canvas.js
+let bullets = [];
+
+// // Upon mouse click bullets are fired from the mouse into "space"
+window.addEventListener('click', function () {
+   bullets.push(new Bullet(mouse.x, mouse.y, 100))
+});
+
+// End Bullets
+
+
+
+
+
+
 
 // function to animate objects
 function animate() {
     requestAnimationFrame(animate);
     c.fillStyle = "#000";
 	c.fillRect(0, 0, innerWidth, innerHeight);
+
 
 
 	// Draws Stars
@@ -184,9 +249,12 @@ function animate() {
 	tacoTruck()
 
 
-	// for (let i = 0; i < bullets.length; i++) {
-	// 	bullets[i].update();
-	// }
+	// Shoots bullets
+	for (let i = 0; i < bullets.length; i++) {
+		bullets[i].update();
+	}
+
+
 
 	// for (let i = 0; i < monsters.length; i++) {
 	// 	monsters[i].update();
