@@ -365,6 +365,8 @@ for (var _i = 0; _i < 1; _i++) {
 
 
 // HIPSTERS
+
+// Sets images of hipsters to variables
 var hipsterOne = new Image();
 hipsterOne.src = "./hipsterOne.png";
 
@@ -374,26 +376,65 @@ hipsterTwo.src = "./hipsterTwo.png";
 var hipsterThree = new Image();
 hipsterThree.src = "./hipsterThree.png";
 
-function Hipster(imgHipster, x, y, w, h) {
+// Create a Hipster object for hipster images
+function Hipster(imgHipster, x, y) {
 	this.imgHipster = imgHipster;
 	this.x = x;
 	this.y = y;
-	this.w = w;
-	this.h = h;
+	this.z = 2000;
+	this.w = 100;
+	this.h = 100;
+	this.dx = 0;
+	this.dy = 0;
+	this.dz = -10;
+	this.hipsterW = undefined;
+	this.hipsterH = undefined;
+	this.hipsterX = undefined;
+	this.hipsterY = undefined;
+
+	// Draws images of Hipster object
+	this.draw = function () {
+		c.drawImage(this.imgHipster, this.hipsterX, this.hipsterY, this.hipsterW, this.hipsterH);
+	};
+
+	// Calls draw function and updates position and velocity of hipster
+	this.update = function () {
+
+		this.hipsterX = (this.x - centerX) * (focalLength / this.z);
+		this.hipsterX += centerX;
+
+		this.hipsterY = (this.y - centerY) * (focalLength / this.z);
+		this.hipsterY += centerY;
+
+		this.hipsterW = this.w * (focalLength / this.z);
+		this.hipsterH = this.h * (focalLength / this.z);
+
+		this.hipsterX += this.dx;
+		this.hipsterY += this.dy;
+
+		this.z += this.dz;
+
+		if (this.z <= 0) {
+			this.z = parseInt(innerWidth);
+		}
+		this.draw();
+	};
 }
 
-Hipster.prototype.draw = function () {
-	c.drawImage(this.imgHipster, this.x, this.y, this.w, this.h);
-};
+// Creates new Hipster objects and sets to variables
+var hipOne = new Hipster(hipsterOne, 200, 400);
+var hipTwo = new Hipster(hipsterTwo, 500, 200);
+var hipThree = new Hipster(hipsterThree, 600, 500);
+console.log(hipOne);
 
-var hipOne = new Hipster(hipsterOne, 200, 200, 60, 60);
-var hipTwo = new Hipster(hipsterTwo, 300, 200, 80, 80);
-var hipThree = new Hipster(hipsterThree, 400, 200, 100, 100);
-
+// Pushes all Hipster objects into array of hipsters
 var hipsters = [];
 hipsters.push(hipOne);
 hipsters.push(hipTwo);
 hipsters.push(hipThree);
+
+// END HIPSTERS
+
 
 // function to animate objects
 function animate() {
@@ -406,13 +447,13 @@ function animate() {
 		stars[_i2].update();
 	}
 
+	// // HIPSTERS
+	for (var _i3 = 0; _i3 < hipsters.length; _i3++) {
+		hipsters[_i3].update();
+	}
+
 	// function starShip draws green circle attached to mouse
 	tacoTruck();
-
-	// HIPSTERS
-	for (var _i3 = 0; _i3 < hipsters.length; _i3++) {
-		hipsters[_i3].draw();
-	}
 
 	// Shoots bullets
 	for (var _i4 = 0; _i4 < bullets.length; _i4++) {
