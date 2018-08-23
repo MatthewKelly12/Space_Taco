@@ -77,7 +77,7 @@ imgTacoTruck.src = "./tacoTruck.png"
 
 // Shooter, green circle attached to mouse
 function tacoTruck() {
-    c.drawImage(imgTacoTruck, mouse.x, mouse.y, 200, 200)
+    c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120)
 }
 
 
@@ -159,68 +159,131 @@ for (let i = 0; i < numStar; i++) {
 
 
 
-// Bullets
-// // Constructor function for bullets to be shot from the mouse
-function Bullet(x, y, z) {
-    this.x = x;
-    this.y = y;
-	this.z = z;
-	this.dx = 0;
-	this.dy = 0;
-	this.dz = 75;
-    this.radius = 20;
-	this.color = "yellow"
-	this.bulletRadius = undefined
-	this.bulletX = undefined
-	this.bulletY = undefined
+// // Bullets
+// // // Constructor function for bullets to be shot from the mouse
+// function Bullet(x, y, z) {
+//     this.x = x;
+//     this.y = y;
+// 	this.z = z;
+// 	this.dx = 0;
+// 	this.dy = 0;
+// 	this.dz = 75;
+//     this.radius = 20;
+// 	this.color = "yellow"
+// 	this.bulletRadius = undefined
+// 	this.bulletX = undefined
+// 	this.bulletY = undefined
 
 
-// 	// Function that draws the bullet
-	this.draw = function() {
-		c.beginPath();
-		c.arc(this.bulletX, this.bulletY, this.bulletRadius, TWO_PI, false);
-		c.fillStyle = this.color;
-		c.fill();
-		c.closePath();
-	}
+// // 	// Function that draws the bullet
+// 	this.draw = function() {
+// 		c.beginPath();
+// 		c.arc(this.bulletX, this.bulletY, this.bulletRadius, TWO_PI, false);
+// 		c.fillStyle = this.color;
+// 		c.fill();
+// 		c.closePath();
+// 	}
 
-// 	// Adds travel and depth to bullets with focal length formula
-    this.update = function () {
-		this.draw();
+// // 	// Adds travel and depth to bullets with focal length formula
+//     this.update = function () {
+// 		this.draw();
 
-        this.bulletX = (this.x - centerX) * (focalLength / this.z)
-        this.bulletX += centerX;
+//         this.bulletX = (this.x - centerX) * (focalLength / this.z)
+//         this.bulletX += centerX;
 
-        this.bulletY = (this.y - centerY) * (focalLength / this.z)
-        this.bulletY += centerY;
+//         this.bulletY = (this.y - centerY) * (focalLength / this.z)
+//         this.bulletY += centerY;
 
-        this.bulletRadius = this.radius * (focalLength / this.z);
+//         this.bulletRadius = this.radius * (focalLength / this.z);
 
-// 		// Makes bullet move "into space"
-       	this.z += this.dz;
+// // 		// Makes bullet move "into space"
+//        	this.z += this.dz;
 
 
 
-// 		// Detects collision between bullets and monsters
-// 		// Monsters turn orange upon collision
-        // if (distance(this.x, this.y, monster1.x, monster1.y) < 100 && (this.z - monster1.z) >= 0) {
-        //     monster1.color = "orange";
-        // }
-    }
+// // 		// Detects collision between bullets and monsters
+// // 		// Monsters turn orange upon collision
+//         // if (distance(this.x, this.y, monster1.x, monster1.y) < 100 && (this.z - monster1.z) >= 0) {
+//         //     monster1.color = "orange";
+//         // }
+//     }
 
+// }
+
+// // bullets array that holds bullets fired from the mouse click
+// // bullets.update() gets called in the animate function on canvas.js
+// let bullets = [];
+
+// // // Upon mouse click bullets are fired from the mouse into "space"
+// window.addEventListener('click', function () {
+//    bullets.push(new Bullet(mouse.x, mouse.y, 100))
+// });
+
+// // End Bullets
+
+
+
+// TACO
+// Sets image of taco to variable
+let tacoImg = new Image()
+tacoImg.src = "./taco.png"
+
+// Create a taco object for taco images
+function Taco(img, x, y) {
+	this.img = img
+	this.x = x
+	this.y = y
+	this.z = 100
+	this.w = 70
+	this.h = 70
+	this.dx = 0
+	this.dy = 0
+	this.dz = 60
+	this.tacoX = undefined
+	this.tacoY = undefined
+	this.tacoW = undefined
+	this.tacoH = undefined
 }
 
-// bullets array that holds bullets fired from the mouse click
-// bullets.update() gets called in the animate function on canvas.js
-let bullets = [];
+// Draws images of Taco object
+Taco.prototype.draw = function () {
+	c.drawImage(this.img, this.tacoX, this.tacoY, this.tacoW, this.tacoH)
+}
 
-// // Upon mouse click bullets are fired from the mouse into "space"
+// Calls draw function and updates position and velocity of Taco
+Taco.prototype.update = function () {
+
+	this.tacoX = (this.x - centerX) * (focalLength / this.z)
+    this.tacoX += centerX;
+
+    this.tacoY = (this.y - centerY) * (focalLength / this.z)
+    this.tacoY += centerY;
+
+	this.tacoW = this.w * (focalLength / this.z);
+	this.tacoH = this.h * (focalLength / this.z);
+
+    this.tacoX += this.dx;
+    this.tacoY += this.dy;
+
+    this.z += this.dz;
+
+    if (this.z <= 0) {
+        this.z = parseInt(innerWidth)
+	}
+	this.draw()
+}
+
+
+// tacos array that holds tacos fired from the mouse click
+// tacos.update() gets called in the animate function on canvas.js
+let tacos = [];
+
+// // Upon mouse click tacos are fired from the mouse into "space"
 window.addEventListener('click', function () {
-   bullets.push(new Bullet(mouse.x, mouse.y, 100))
+   tacos.push(new Taco(tacoImg, mouse.x - 60, mouse.y -60))
 });
 
-// End Bullets
-
+// END TACO
 
 
 
@@ -251,7 +314,7 @@ function Hipster(imgHipster, x, y) {
 	this.h = 100
 	this.dx = 0
 	this.dy = 0
-	this.dz = -10
+	this.dz = -6
 	this.hipsterW = undefined
 	this.hipsterH = undefined
 	this.hipsterX = undefined
@@ -336,8 +399,8 @@ function animate() {
 
 
 	// Shoots bullets
-	for (let i = 0; i < bullets.length; i++) {
-		bullets[i].update();
+	for (let i = 0; i < tacos.length; i++) {
+		tacos[i].update();
 	}
 
 }
