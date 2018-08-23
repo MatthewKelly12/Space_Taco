@@ -70,14 +70,14 @@ addEventListener('mousemove', function (event) {
 })
 
 
+let imgTacoTruck = new Image()
+imgTacoTruck.src = "./tacoTruck.png"
+
 
 
 // Shooter, green circle attached to mouse
 function tacoTruck() {
-    c.beginPath();
-    c.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2)
-    c.fillStyle = "green";
-    c.fill();
+    c.drawImage(imgTacoTruck, mouse.x, mouse.y, 200, 200)
 }
 
 
@@ -224,74 +224,7 @@ window.addEventListener('click', function () {
 
 
 
-// Monsters
-// let monsterX = null;
-// let monsterY = null;
-// let monster_Final_Radius = null;
-// let monsterX_dir = 0;
-// let monsterY_dir = 0;
-// let monsterRadius = 20;
 
-
-// Constructor function for monsters/targets
-function Monster(x, y, z) {
-    this.x = x;
-    this.y = y;
-	this.z = z;
-	this.dx = 0;
-    this.dy = 0;
-    this.dz = -10;
-    this.radius = 20
-	this.color = "blue"
-	this.monsterRadius = undefined
-	this.monsterX = undefined
-	this.monsterY = undefined
-
-	this.draw = function() {
-		c.beginPath();
-		c.arc(this.monsterX, this.monsterY, this.monsterRadius, TWO_PI, false);
-		c.fillStyle = this.color;
-		c.fill();
-		c.closePath();
-	}
-
-	// Adds travel and depth to stars with focal length formula
-    this.update = function () {
-        this.monsterX = (this.x - centerX) * (focalLength / this.z)
-        this.monsterX += centerX;
-
-        this.monsterY = (this.y - centerY) * (focalLength / this.z)
-        this.monsterY += centerY;
-
-        this.monsterRadius = this.radius * (focalLength / this.z);
-
-        this.monsterX += this.dx;
-        this.monsterY += this.dy;
-
-        this.z += this.dz;
-
-        if (this.z <= 0) {
-            this.z = parseInt(innerWidth)
-        }
-        this.draw();
-    }
-
-}
-
-let monsters = [];
-let monster1;
-
-// X, Y, Z Values for monsters/targets
-// gets pushed into monsters array
-for (let i = 0; i < 1; i++) {
-    let x = Math.random() * (innerWidth);
-    let y = Math.random() * (innerHeight);
-    let z = 2000
-	monster1 = new Monster(x,y,z);
-	monsters.push(monster1)
-}
-
-// END MONSTERS
 
 
 
@@ -313,7 +246,7 @@ function Hipster(imgHipster, x, y) {
 	this.imgHipster = imgHipster
 	this.x = x
 	this.y = y
-	this.z = 2000
+	this.z = 3000
 	this.w = 100
 	this.h = 100
 	this.dx = 0
@@ -323,36 +256,37 @@ function Hipster(imgHipster, x, y) {
 	this.hipsterH = undefined
 	this.hipsterX = undefined
 	this.hipsterY = undefined
+}
 
 
 // Draws images of Hipster object
-	this.draw = function () {
+Hipster.prototype.draw = function () {
 	c.drawImage(this.imgHipster, this.hipsterX, this.hipsterY, this.hipsterW, this.hipsterH)
-	}
+}
 
 // Calls draw function and updates position and velocity of hipster
-	this.update = function () {
+Hipster.prototype.update = function () {
 
 	this.hipsterX = (this.x - centerX) * (focalLength / this.z)
-        this.hipsterX += centerX;
+    this.hipsterX += centerX;
 
-        this.hipsterY = (this.y - centerY) * (focalLength / this.z)
-        this.hipsterY += centerY;
+    this.hipsterY = (this.y - centerY) * (focalLength / this.z)
+    this.hipsterY += centerY;
 
-		this.hipsterW = this.w * (focalLength / this.z);
-		this.hipsterH = this.h * (focalLength / this.z);
+	this.hipsterW = this.w * (focalLength / this.z);
+	this.hipsterH = this.h * (focalLength / this.z);
 
-        this.hipsterX += this.dx;
-        this.hipsterY += this.dy;
+    this.hipsterX += this.dx;
+    this.hipsterY += this.dy;
 
-        this.z += this.dz;
+    this.z += this.dz;
 
-        if (this.z <= 0) {
-            this.z = parseInt(innerWidth)
-		}
-		this.draw()
+    if (this.z <= 0) {
+        this.z = parseInt(innerWidth)
 	}
+	this.draw()
 }
+
 
 // Creates new Hipster objects and sets to variables
 let hipOne = new Hipster(hipsterOne, 200, 400)
@@ -405,15 +339,6 @@ function animate() {
 	for (let i = 0; i < bullets.length; i++) {
 		bullets[i].update();
 	}
-
-
-	// MONSTERS
-	for (let i = 0; i < monsters.length; i++) {
-		monsters[i].update();
-	}
-
-
-
 
 }
 

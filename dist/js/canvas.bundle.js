@@ -163,12 +163,12 @@ addEventListener('mousemove', function (event) {
 	mouse.y = event.y;
 });
 
+var imgTacoTruck = new Image();
+imgTacoTruck.src = "./tacoTruck.png";
+
 // Shooter, green circle attached to mouse
 function tacoTruck() {
-	c.beginPath();
-	c.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2);
-	c.fillStyle = "green";
-	c.fill();
+	c.drawImage(imgTacoTruck, mouse.x, mouse.y, 200, 200);
 }
 
 // Stars
@@ -295,75 +295,6 @@ window.addEventListener('click', function () {
 // End Bullets
 
 
-// Monsters
-// let monsterX = null;
-// let monsterY = null;
-// let monster_Final_Radius = null;
-// let monsterX_dir = 0;
-// let monsterY_dir = 0;
-// let monsterRadius = 20;
-
-
-// Constructor function for monsters/targets
-function Monster(x, y, z) {
-	this.x = x;
-	this.y = y;
-	this.z = z;
-	this.dx = 0;
-	this.dy = 0;
-	this.dz = -10;
-	this.radius = 20;
-	this.color = "blue";
-	this.monsterRadius = undefined;
-	this.monsterX = undefined;
-	this.monsterY = undefined;
-
-	this.draw = function () {
-		c.beginPath();
-		c.arc(this.monsterX, this.monsterY, this.monsterRadius, TWO_PI, false);
-		c.fillStyle = this.color;
-		c.fill();
-		c.closePath();
-	};
-
-	// Adds travel and depth to stars with focal length formula
-	this.update = function () {
-		this.monsterX = (this.x - centerX) * (focalLength / this.z);
-		this.monsterX += centerX;
-
-		this.monsterY = (this.y - centerY) * (focalLength / this.z);
-		this.monsterY += centerY;
-
-		this.monsterRadius = this.radius * (focalLength / this.z);
-
-		this.monsterX += this.dx;
-		this.monsterY += this.dy;
-
-		this.z += this.dz;
-
-		if (this.z <= 0) {
-			this.z = parseInt(innerWidth);
-		}
-		this.draw();
-	};
-}
-
-var monsters = [];
-var monster1 = void 0;
-
-// X, Y, Z Values for monsters/targets
-// gets pushed into monsters array
-for (var _i = 0; _i < 1; _i++) {
-	var _x = Math.random() * innerWidth;
-	var _y = Math.random() * innerHeight;
-	var _z = 2000;
-	monster1 = new Monster(_x, _y, _z);
-	monsters.push(monster1);
-}
-
-// END MONSTERS
-
-
 // HIPSTERS
 
 // Sets images of hipsters to variables
@@ -381,7 +312,7 @@ function Hipster(imgHipster, x, y) {
 	this.imgHipster = imgHipster;
 	this.x = x;
 	this.y = y;
-	this.z = 2000;
+	this.z = 3000;
 	this.w = 100;
 	this.h = 100;
 	this.dx = 0;
@@ -391,35 +322,35 @@ function Hipster(imgHipster, x, y) {
 	this.hipsterH = undefined;
 	this.hipsterX = undefined;
 	this.hipsterY = undefined;
-
-	// Draws images of Hipster object
-	this.draw = function () {
-		c.drawImage(this.imgHipster, this.hipsterX, this.hipsterY, this.hipsterW, this.hipsterH);
-	};
-
-	// Calls draw function and updates position and velocity of hipster
-	this.update = function () {
-
-		this.hipsterX = (this.x - centerX) * (focalLength / this.z);
-		this.hipsterX += centerX;
-
-		this.hipsterY = (this.y - centerY) * (focalLength / this.z);
-		this.hipsterY += centerY;
-
-		this.hipsterW = this.w * (focalLength / this.z);
-		this.hipsterH = this.h * (focalLength / this.z);
-
-		this.hipsterX += this.dx;
-		this.hipsterY += this.dy;
-
-		this.z += this.dz;
-
-		if (this.z <= 0) {
-			this.z = parseInt(innerWidth);
-		}
-		this.draw();
-	};
 }
+
+// Draws images of Hipster object
+Hipster.prototype.draw = function () {
+	c.drawImage(this.imgHipster, this.hipsterX, this.hipsterY, this.hipsterW, this.hipsterH);
+};
+
+// Calls draw function and updates position and velocity of hipster
+Hipster.prototype.update = function () {
+
+	this.hipsterX = (this.x - centerX) * (focalLength / this.z);
+	this.hipsterX += centerX;
+
+	this.hipsterY = (this.y - centerY) * (focalLength / this.z);
+	this.hipsterY += centerY;
+
+	this.hipsterW = this.w * (focalLength / this.z);
+	this.hipsterH = this.h * (focalLength / this.z);
+
+	this.hipsterX += this.dx;
+	this.hipsterY += this.dy;
+
+	this.z += this.dz;
+
+	if (this.z <= 0) {
+		this.z = parseInt(innerWidth);
+	}
+	this.draw();
+};
 
 // Creates new Hipster objects and sets to variables
 var hipOne = new Hipster(hipsterOne, 200, 400);
@@ -443,26 +374,21 @@ function animate() {
 	c.fillRect(0, 0, innerWidth, innerHeight);
 
 	// Draws Stars
-	for (var _i2 in stars) {
-		stars[_i2].update();
+	for (var _i in stars) {
+		stars[_i].update();
 	}
 
 	// // HIPSTERS
-	for (var _i3 = 0; _i3 < hipsters.length; _i3++) {
-		hipsters[_i3].update();
+	for (var _i2 = 0; _i2 < hipsters.length; _i2++) {
+		hipsters[_i2].update();
 	}
 
 	// function starShip draws green circle attached to mouse
 	tacoTruck();
 
 	// Shoots bullets
-	for (var _i4 = 0; _i4 < bullets.length; _i4++) {
-		bullets[_i4].update();
-	}
-
-	// MONSTERS
-	for (var _i5 = 0; _i5 < monsters.length; _i5++) {
-		monsters[_i5].update();
+	for (var _i3 = 0; _i3 < bullets.length; _i3++) {
+		bullets[_i3].update();
 	}
 }
 

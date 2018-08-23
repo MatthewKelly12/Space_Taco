@@ -1,22 +1,29 @@
-// let monsterX = null;
-// let monsterY = null;
-// let monster_Final_Radius = null;
-// let monsterX_dir = 0;
-// let monsterY_dir = 0;
-// let monsterRadius = 20;
+// // Monsters
+// // let monsterX = null;
+// // let monsterY = null;
+// // let monster_Final_Radius = null;
+// // let monsterX_dir = 0;
+// // let monsterY_dir = 0;
+// // let monsterRadius = 20;
 
 
 // // Constructor function for monsters/targets
 // function Monster(x, y, z) {
 //     this.x = x;
 //     this.y = y;
-//     this.z = z;
-//     this.radius = monsterRadius;
-//     this.color = "blue"
+// 	this.z = z;
+// 	this.dx = 0;
+//     this.dy = 0;
+//     this.dz = -10;
+//     this.radius = 20
+// 	this.color = "blue"
+// 	this.monsterRadius = undefined
+// 	this.monsterX = undefined
+// 	this.monsterY = undefined
 
 // 	this.draw = function() {
 // 		c.beginPath();
-// 		c.arc(monsterX, monsterY, monster_Final_Radius, TWO_PI, false);
+// 		c.arc(this.monsterX, this.monsterY, this.monsterRadius, TWO_PI, false);
 // 		c.fillStyle = this.color;
 // 		c.fill();
 // 		c.closePath();
@@ -24,18 +31,18 @@
 
 // 	// Adds travel and depth to stars with focal length formula
 //     this.update = function () {
-//         monsterX = (this.x - centerX) * (focalLength / this.z)
-//         monsterX += centerX;
+//         this.monsterX = (this.x - centerX) * (focalLength / this.z)
+//         this.monsterX += centerX;
 
-//         monsterY = (this.y - centerY) * (focalLength / this.z)
-//         monsterY += centerY;
+//         this.monsterY = (this.y - centerY) * (focalLength / this.z)
+//         this.monsterY += centerY;
 
-//         monster_Final_Radius = monsterRadius * (focalLength / this.z);
+//         this.monsterRadius = this.radius * (focalLength / this.z);
 
-//         monsterX += starX_dir;
-//         monsterY += starY_dir;
+//         this.monsterX += this.dx;
+//         this.monsterY += this.dy;
 
-//         this.z += -10;
+//         this.z += this.dz;
 
 //         if (this.z <= 0) {
 //             this.z = parseInt(innerWidth)
@@ -57,3 +64,5 @@
 // 	monster1 = new Monster(x,y,z);
 // 	monsters.push(monster1)
 // }
+
+// // END MONSTERS
