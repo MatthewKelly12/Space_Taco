@@ -98,6 +98,7 @@
 
 // import tacoTruck from './tacoTruck'
 // import Star from './stars'
+// import utils from './utils'
 
 var canvas = document.querySelector("canvas");
 
@@ -114,6 +115,11 @@ function distance(x1, y1, x2, y2) {
 	var yDist = y2 - y1;
 
 	return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+}
+
+// Returns a random number bewteen min and max
+function randomIntFromRange(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // Defines our mouse object which will be attached to x and y
@@ -163,10 +169,11 @@ addEventListener('mousemove', function (event) {
 	mouse.y = event.y;
 });
 
+// TACO TRUCK
 var imgTacoTruck = new Image();
 imgTacoTruck.src = "./tacoTruck.png";
 
-// Shooter, green circle attached to mouse
+// Shooter, img of Taco Truck attached to mouse
 function tacoTruck() {
 	c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120);
 }
@@ -234,68 +241,6 @@ for (var i = 0; i < numStar; i++) {
 	stars.push(new Star(x, y, z));
 }
 // End stars
-
-
-// // Bullets
-// // // Constructor function for bullets to be shot from the mouse
-// function Bullet(x, y, z) {
-//     this.x = x;
-//     this.y = y;
-// 	this.z = z;
-// 	this.dx = 0;
-// 	this.dy = 0;
-// 	this.dz = 75;
-//     this.radius = 20;
-// 	this.color = "yellow"
-// 	this.bulletRadius = undefined
-// 	this.bulletX = undefined
-// 	this.bulletY = undefined
-
-
-// // 	// Function that draws the bullet
-// 	this.draw = function() {
-// 		c.beginPath();
-// 		c.arc(this.bulletX, this.bulletY, this.bulletRadius, TWO_PI, false);
-// 		c.fillStyle = this.color;
-// 		c.fill();
-// 		c.closePath();
-// 	}
-
-// // 	// Adds travel and depth to bullets with focal length formula
-//     this.update = function () {
-// 		this.draw();
-
-//         this.bulletX = (this.x - centerX) * (focalLength / this.z)
-//         this.bulletX += centerX;
-
-//         this.bulletY = (this.y - centerY) * (focalLength / this.z)
-//         this.bulletY += centerY;
-
-//         this.bulletRadius = this.radius * (focalLength / this.z);
-
-// // 		// Makes bullet move "into space"
-//        	this.z += this.dz;
-
-
-// // 		// Detects collision between bullets and monsters
-// // 		// Monsters turn orange upon collision
-//         // if (distance(this.x, this.y, monster1.x, monster1.y) < 100 && (this.z - monster1.z) >= 0) {
-//         //     monster1.color = "orange";
-//         // }
-//     }
-
-// }
-
-// // bullets array that holds bullets fired from the mouse click
-// // bullets.update() gets called in the animate function on canvas.js
-// let bullets = [];
-
-// // // Upon mouse click bullets are fired from the mouse into "space"
-// window.addEventListener('click', function () {
-//    bullets.push(new Bullet(mouse.x, mouse.y, 100))
-// });
-
-// // End Bullets
 
 
 // TACO
@@ -406,14 +351,14 @@ Hipster.prototype.update = function () {
 	this.hipsterW = this.w * (focalLength / this.z);
 	this.hipsterH = this.h * (focalLength / this.z);
 
-	this.hipsterX += this.dx;
-	this.hipsterY += this.dy;
+	// this.hipsterX += this.dx;
+	// this.hipsterY += this.dy;
 
 	this.z += this.dz;
 
-	if (this.z <= 0) {
-		this.z = parseInt(innerWidth);
-	}
+	// if (this.z <= 0) {
+	//     this.z = parseInt(innerWidth)
+	// }
 	this.draw();
 };
 
@@ -425,12 +370,18 @@ console.log(hipOne);
 
 // Pushes all Hipster objects into array of hipsters
 var hipsters = [];
-hipsters.push(hipOne);
-hipsters.push(hipTwo);
-hipsters.push(hipThree);
+var arrayRandomHipster = [];
+// hipsters.push(hipOne)
+arrayRandomHipster.push(hipOne);
+arrayRandomHipster.push(hipTwo);
+arrayRandomHipster.push(hipThree);
 
 // END HIPSTERS
 
+
+var hipsterSpawnRate = 100;
+var ticker = 0;
+var randomHipster = arrayRandomHipster[Math.floor(Math.random() * arrayRandomHipster.length)];
 
 // function to animate objects
 function animate() {
@@ -444,16 +395,28 @@ function animate() {
 	}
 
 	// // HIPSTERS
-	for (var _i2 = 0; _i2 < hipsters.length; _i2++) {
-		hipsters[_i2].update();
-	}
+	hipsters.forEach(function (hipster, index) {
+		hipster.update();
+		if (hipster.z < 0) {
+			hipsters.splice(index, 1);
+		}
+	});
 
 	// function starShip draws green circle attached to mouse
 	tacoTruck();
 
-	// Shoots bullets
-	for (var _i3 = 0; _i3 < tacos.length; _i3++) {
-		tacos[_i3].update();
+	// Shoots tacos
+	for (var _i2 = 0; _i2 < tacos.length; _i2++) {
+		tacos[_i2].update();
+	}
+
+	ticker++;
+	if (ticker % hipsterSpawnRate === 0) {
+		// 	// const radius = 12
+		var _x = Math.max(100, Math.random() * canvas.width - 100);
+		var _y = Math.max(100, Math.random() * canvas.width - 100);
+		hipsters.push(new Hipster(hipsterThree, _x, _y));
+		// hipsterSpawnRate = randomIntFromRange(75, 100)
 	}
 }
 
