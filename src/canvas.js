@@ -149,7 +149,8 @@ Star.prototype.update = function () {
 	// Makes stars move "into space"
 	this.z += this.dz;
 
-	// Redirects stars to start over
+	// Redirects stars Z coordinate
+	// to start over at value of screen width
     if (this.z <= 0) {
         this.z = parseInt(innerWidth)
     }
@@ -343,6 +344,11 @@ function animate() {
 		if(hipster.z < 0) {
 			hipsters.splice(index, 1)
 		}
+		tacos.forEach((taco, index) => {
+		if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && (hipster.z - taco.z) <= 10) {
+			            hipsters.splice(index, 1);
+		}
+		})
 	})
 
 	// function starShip draws green circle attached to mouse
@@ -350,9 +356,13 @@ function animate() {
 
 
 	// Shoots tacos
-	for (let i = 0; i < tacos.length; i++) {
-		tacos[i].update();
-	}
+	tacos.forEach((taco, index) => {
+		taco.update()
+		if(taco.z > 6000) {
+			tacos.splice(index, 1)
+		}
+	})
+
 
 	ticker++
 	if (ticker % hipsterSpawnRate === 0) {
