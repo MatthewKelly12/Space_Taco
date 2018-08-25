@@ -24,6 +24,11 @@ function randomIntFromRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+// Returns random value from array
+function randomFromArray(array) {
+    return array[Math.floor(Math.random() * array.length)]
+}
+
 
 // Defines our mouse object which will be attached to x and y
 // coordinates on a 'mousemove' event listener
@@ -235,17 +240,6 @@ window.addEventListener('click', function () {
 
 
 // HIPSTERS
-
-// Sets images of hipsters to variables
-let hipsterOne = new Image()
-hipsterOne.src = "./hipsterOne.png"
-
-let hipsterTwo = new Image()
-hipsterTwo.src = "./hipsterTwo.png"
-
-let hipsterThree = new Image()
-hipsterThree.src = "./hipsterThree.png"
-
 // Create a Hipster object for hipster images
 function Hipster(imgHipster, x, y) {
 	this.imgHipster = imgHipster
@@ -292,20 +286,29 @@ Hipster.prototype.update = function () {
 	this.draw()
 }
 
+// Sets images of hipsters to variables
+let hipsterOne = new Image()
+hipsterOne.src = "./hipsterOne.png"
+
+let hipsterTwo = new Image()
+hipsterTwo.src = "./hipsterTwo.png"
+
+let hipsterThree = new Image()
+hipsterThree.src = "./hipsterThree.png"
 
 // Creates new Hipster objects and sets to variables
-let hipOne = new Hipster(hipsterOne, 200, 400)
-let hipTwo = new Hipster(hipsterTwo, 500, 200)
-let hipThree = new Hipster(hipsterThree, 600, 500)
-console.log(hipOne)
+// let hipOne = new Hipster(hipsterOne, 200, 400)
+// let hipTwo = new Hipster(hipsterTwo, 500, 200)
+// let hipThree = new Hipster(hipsterThree, 600, 500)
+// console.log(hipOne)
 
 // Pushes all Hipster objects into array of hipsters
 let hipsters = []
 let arrayRandomHipster = []
 // hipsters.push(hipOne)
-arrayRandomHipster.push(hipOne)
-arrayRandomHipster.push(hipTwo)
-arrayRandomHipster.push(hipThree)
+arrayRandomHipster.push(hipsterOne)
+arrayRandomHipster.push(hipsterTwo)
+arrayRandomHipster.push(hipsterThree)
 
 // END HIPSTERS
 
@@ -317,7 +320,6 @@ arrayRandomHipster.push(hipThree)
 
 let hipsterSpawnRate = 100
 let ticker = 0
-let randomHipster = arrayRandomHipster[Math.floor(Math.random() * arrayRandomHipster.length)]
 
 
 // function to animate objects
@@ -356,8 +358,8 @@ function animate() {
 	if (ticker % hipsterSpawnRate === 0) {
 	// 	// const radius = 12
 		const x = Math.max(100, Math.random() * canvas.width - 100)
-		const y = Math.max(100, Math.random() * canvas.width - 100)
-		hipsters.push(new Hipster(hipsterThree, x, y))
+		const y = Math.max(100, Math.random() * canvas.height - 100)
+		hipsters.push(new Hipster(randomFromArray(arrayRandomHipster), x, y))
 		// hipsterSpawnRate = randomIntFromRange(75, 100)
 	}
 
