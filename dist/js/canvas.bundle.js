@@ -404,6 +404,11 @@ function animate() {
 		if (hipster.z < 0) {
 			hipsters.splice(index, 1);
 		}
+		tacos.forEach(function (taco, index) {
+			if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && hipster.z - taco.z <= 10) {
+				hipsters.splice(index, 1);
+			}
+		});
 	});
 
 	// function starShip draws green circle attached to mouse
