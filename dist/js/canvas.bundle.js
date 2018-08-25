@@ -183,6 +183,27 @@ function tacoTruck() {
 	c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120);
 }
 
+// Variable to show score on screen
+var score = 0;
+
+// Draws 'Score:' text
+function scoreText() {
+	c.beginPath();
+	c.font = "40pt Comic Sans MS";
+	c.fillStyle = "white";
+	c.fillText('Score:', 20, 600, 300);
+	c.fill();
+}
+
+// Draws actual score number, starts at 0
+function scoreNumber() {
+	c.beginPath();
+	c.font = "40pt Comic Sans MS";
+	c.fillStyle = "white";
+	c.fillText(score, 200, 600, 300);
+	c.fill();
+}
+
 // Stars
 var numStar = 2000;
 var stars = [];
@@ -401,18 +422,31 @@ function animate() {
 	// // HIPSTERS
 	hipsters.forEach(function (hipster, index) {
 		hipster.update();
+		// REMOVE HIPSTERS FROM SCREEN/ARRAY IF
+		// Z COORDINATE IS PASSED FRONT OF SCREEN
 		if (hipster.z < 0) {
 			hipsters.splice(index, 1);
 		}
+		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach(function (taco, index) {
 			if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && hipster.z - taco.z <= 10) {
+				// REMOVE HIPSTERS FROM SCREEN/ARRAY
+				// IF COLLIDED WITH TACOS
 				hipsters.splice(index, 1);
+				// SCORE GOES UP UPON COLLISION
+				score += 5;
 			}
 		});
 	});
 
 	// function starShip draws green circle attached to mouse
 	tacoTruck();
+
+	// Draws "Score:"
+	scoreText();
+
+	// Draws score number
+	scoreNumber();
 
 	// Shoots tacos
 	tacos.forEach(function (taco, index) {
