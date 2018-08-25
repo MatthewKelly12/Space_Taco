@@ -81,21 +81,28 @@ addEventListener('mousemove', function (event) {
 	mouse.y = event.y
 })
 
+
+
+
+
+
+
+
 // TACO TRUCK
 let imgTacoTruck = new Image()
 imgTacoTruck.src = "./tacoTruck.png"
-
-
 
 // Shooter, img of Taco Truck attached to mouse
 function tacoTruck() {
     c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120)
 }
 
-// Variable to show score on screen
+
+
+// VARIABLE TO HOLD SCORE
 let score = 0;
 
-// Draws 'Score:' text
+// DRAWS 'Score:' TEXT
 function scoreText() {
 	c.beginPath()
 	c.font = "40pt Comic Sans MS"
@@ -104,12 +111,24 @@ function scoreText() {
 	c.fill()
 }
 
-// Draws actual score number, starts at 0
+// DRAWS ACTUAL SCORE NUMBER, STARTS AT 0
 function scoreNumber () {
 	c.beginPath()
 	c.font = "40pt Comic Sans MS"
 	c.fillStyle = "white"
 	c.fillText(score, 200, 600, 300)
+	c.fill()
+}
+
+let time = 60
+
+
+// DRAWS TIMER
+function timer () {
+	c.beginPath()
+	c.font = "40pt Comic Sans MS"
+	c.fillStyle = "white"
+	c.fillText(time, 900, 600, 300)
 	c.fill()
 }
 
@@ -122,7 +141,7 @@ function scoreNumber () {
 
 
 
-// Stars
+// STARS
 let numStar = 2000;
 let stars = [];
 
@@ -141,7 +160,7 @@ function Star(x, y, z) {
 	this.starY = undefined
 }
 
-	// Function that draws the stars
+// DRAWS STARS
 Star.prototype.draw = function() {
 	c.beginPath();
 	c.arc(this.starX, this.starY, this.starRadius, TWO_PI, false);
@@ -150,7 +169,8 @@ Star.prototype.draw = function() {
 	c.closePath();
 }
 
-	// Adds travel and depth to stars with focal length formula
+// CALLS DRAW FUNCTION
+// ADDS MOVEMENT AND DEPTH TO STARS WITH FOCAL LENGTH FORMULA
 Star.prototype.update = function () {
 	this.draw();
 
@@ -318,11 +338,6 @@ hipsterTwo.src = "./hipsterTwo.png"
 let hipsterThree = new Image()
 hipsterThree.src = "./hipsterThree.png"
 
-// Creates new Hipster objects and sets to variables
-// let hipOne = new Hipster(hipsterOne, 200, 400)
-// let hipTwo = new Hipster(hipsterTwo, 500, 200)
-// let hipThree = new Hipster(hipsterThree, 600, 500)
-// console.log(hipOne)
 
 // Pushes all Hipster objects into array of hipsters
 let hipsters = []
@@ -344,7 +359,7 @@ let hipsterSpawnRate = 100
 let ticker = 0
 
 
-// function to animate objects
+// FUNCTION TO ANIMATE OBJECTS
 function animate() {
     requestAnimationFrame(animate);
     c.fillStyle = "#000";
@@ -352,7 +367,7 @@ function animate() {
 
 
 
-	// Draws Stars
+	// DRAWS STARS
 	for (let i in stars) {
         stars[i].update();
 	}
@@ -370,37 +385,50 @@ function animate() {
 		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach((taco, index) => {
 		if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && (hipster.z - taco.z) <= 10) {
+
 			// REMOVE HIPSTERS FROM SCREEN/ARRAY
 			// IF COLLIDED WITH TACOS
 			hipsters.splice(index, 1);
+
 			// SCORE GOES UP UPON COLLISION
 			score += 5
 		}
 		})
 	})
 
-	// function starShip draws green circle attached to mouse
+	// TACO TRUCK IMG attached to mouse
 	tacoTruck()
 
-	// Draws "Score:"
+	// DRAWS "Score:""
 	scoreText()
 
-	// Draws score number
+	// DRAWS SCORE NUMBER
 	scoreNumber()
 
+	// DRAWS TIMER
+	timer()
 
-	// Shoots tacos
+
+	// SHOOTS TACOS
 	tacos.forEach((taco, index) => {
 		taco.update()
+
+		// REMOVES TACOS FROM SCREEN/ARRAY
+		// WHEN Z DEPTH IS MORE THAN 6000
 		if(taco.z > 6000) {
 			tacos.splice(index, 1)
 		}
 	})
 
-
+	if (ticker % 60 === 0) {
+	time -= 1
+	}
+	// TICKER GOES UP EACH ANIMATION FRAME
 	ticker++
+
+	// SPAWNS RANDOM HIPSTER ON SCREEN
+	// WHEN TIMER DIVIDED BY SPAWN RATE IS ZERO
 	if (ticker % hipsterSpawnRate === 0) {
-	// 	// const radius = 12
 		const x = Math.max(100, Math.random() * canvas.width - 100)
 		const y = Math.max(100, Math.random() * canvas.height - 100)
 		hipsters.push(new Hipster(randomFromArray(arrayRandomHipster), x, y))
