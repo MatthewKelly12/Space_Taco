@@ -231,7 +231,8 @@ Star.prototype.update = function () {
 	// Makes stars move "into space"
 	this.z += this.dz;
 
-	// Redirects stars to start over
+	// Redirects stars Z coordinate
+	// to start over at value of screen width
 	if (this.z <= 0) {
 		this.z = parseInt(innerWidth);
 	}
@@ -409,9 +410,12 @@ function animate() {
 	tacoTruck();
 
 	// Shoots tacos
-	for (var _i2 = 0; _i2 < tacos.length; _i2++) {
-		tacos[_i2].update();
-	}
+	tacos.forEach(function (taco, index) {
+		taco.update();
+		if (taco.z > 6000) {
+			tacos.splice(index, 1);
+		}
+	});
 
 	ticker++;
 	if (ticker % hipsterSpawnRate === 0) {
