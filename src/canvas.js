@@ -251,7 +251,7 @@ function Hipster(imgHipster, x, y) {
 	this.h = 100
 	this.dx = 0
 	this.dy = 0
-	this.dz = -6
+	this.dz = -8
 	this.hipsterW = undefined
 	this.hipsterH = undefined
 	this.hipsterX = undefined
