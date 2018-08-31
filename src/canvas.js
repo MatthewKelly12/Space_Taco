@@ -51,7 +51,7 @@ let focalLength = 400
 //     if (event.deltaY < 0) {
 //         focalLength *= 1.1;
 //     } else {
-//         focalLength /= 1.1
+//         focalLength /= 1.1;
 //     }
 //     if (focalLength >= innerWidth) {
 //         focalLength = innerWidth - 20;
@@ -60,7 +60,7 @@ let focalLength = 400
 //     }
 // }, false)
 
-// Slight background movement on mousemove
+// // Slight background movement on mousemove
 // window.addEventListener('mousemove', function (event) {
 //     mouse.x = event.x;
 //     mouse.y = event.y;
@@ -120,24 +120,28 @@ function scoreNumber () {
 	c.fill()
 }
 
-let time = 60
 
+// VARIABLES TO HOLD TIME
+let seconds = 60
+let minutes = 2
 
-// DRAWS TIMER
-function timer () {
+// DRAWS MINUTES
+function minute () {
 	c.beginPath()
 	c.font = "40pt Comic Sans MS"
 	c.fillStyle = "white"
-	c.fillText(time, 900, 600, 300)
+	c.fillText(minutes + ":", 850, 600, 300)
 	c.fill()
 }
 
-
-
-
-
-
-
+// DRAWS SECONDS
+function second () {
+	c.beginPath()
+	c.font = "40pt Comic Sans MS"
+	c.fillStyle = "white"
+	c.fillText(seconds, 900, 600, 300)
+	c.fill()
+}
 
 
 
@@ -351,11 +355,75 @@ arrayRandomHipster.push(hipsterThree)
 
 
 
+// POWER UPS, SUPPLIES
+// Create a Supply object for supply images
+function Supply(imgSupply, x, y) {
+	this.imgSupply = imgSupply
+	this.x = x
+	this.y = y
+	this.z = 3000
+	this.w = 100
+	this.h = 100
+	this.dx = 0
+	this.dy = 0
+	this.dz = -8
+	this.supplyW = undefined
+	this.supplyH = undefined
+	this.supplyX = undefined
+	this.supplyY = undefined
+}
+
+// Draws images of Supply object
+Supply.prototype.draw = function () {
+	c.drawImage(this.imgSupply, this.supplyX, this.supplyY, this.supplyW, this.supplyH)
+}
+
+// Calls draw function and updates position and velocity of supply
+Supply.prototype.update = function () {
+
+	this.supplyX = (this.x - centerX) * (focalLength / this.z)
+    this.supplyX += centerX;
+
+    this.supplyY = (this.y - centerY) * (focalLength / this.z)
+    this.supplyY += centerY;
+
+	this.supplyW = this.w * (focalLength / this.z);
+	this.supplyH = this.h * (focalLength / this.z);
+
+    // this.supplyX += this.dx;
+    // this.supplyY += this.dy;
+
+    this.z += this.dz;
+
+    // if (this.z <= 0) {
+    //     this.z = parseInt(innerWidth)
+	// }
+	this.draw()
+}
+
+
+// Sets image of hot sauce to a variable
+let hotSauce = new Image()
+hotSauce.src = "./hotSauce.png"
+
+// Supplies array will hold all animated supply images
+// arrayRandomHipster will hold all supply images until spawned for animation
+let supplies = []
+let arrayRandomSupplies = []
+
+arrayRandomSupplies.push(hotSauce)
+
+
+
+
+
+
 
 
 
 
 let hipsterSpawnRate = 100
+let supplySpawnRate = 50
 let ticker = 0
 
 
@@ -396,6 +464,30 @@ function animate() {
 		})
 	})
 
+
+	// // SUPPLIES
+	supplies.forEach((supply, index) => {
+		supply.update()
+		// REMOVE SUPPLIES FROM SCREEN/ARRAY IF
+		// Z COORDINATE IS PASSED FRONT OF SCREEN
+		if(supply.z < 0) {
+			supplies.splice(index, 1)
+		}
+
+		// COLLISION DETECTION BETWEEN SUPPLIES AND MOUSE/TACO TRUCK
+		if (distance(supply.x, supply.y, mouse.x - 60, mouse.y - 60) < 200 && (supply.z - mouse.z) <= 40) {
+
+			// REMOVE supplies FROM SCREEN/ARRAY
+			// IF COLLIDED WITH MOUSE/TACO TRUCK
+			supplies.splice(index, 1);
+			console.log('HOT SAUCED!')
+
+			// SCORE GOES UP UPON COLLISION
+			score += 10
+		}
+
+	})
+
 	// TACO TRUCK IMG attached to mouse
 	tacoTruck()
 
@@ -404,9 +496,6 @@ function animate() {
 
 	// DRAWS SCORE NUMBER
 	scoreNumber()
-
-	// DRAWS TIMER
-	timer()
 
 
 	// SHOOTS TACOS
@@ -420,19 +509,47 @@ function animate() {
 		}
 	})
 
+	// DRAWS MINUTES
+	minute()
+
+	// DRAWS SECONDS
+	second()
+
+	// SETS TIMER RATE FOR SECONDS TO DECREASE
 	if (ticker % 60 === 0) {
-	time -= 1
+	seconds -= 1
 	}
+
+	// DECREASES MINUTES WHEN SECONDS EQUAL ZERO
+	if (seconds === 0) {
+		minutes += -1
+	}
+
+	// TIME STOP
+	if (minutes === 0 && seconds === 0) {
+		minutes = 0
+		seconds = 0
+	}
+
 	// TICKER GOES UP EACH ANIMATION FRAME
 	ticker++
 
 	// SPAWNS RANDOM HIPSTER ON SCREEN
-	// WHEN TIMER DIVIDED BY SPAWN RATE IS ZERO
+	// WHEN TICKER DIVIDED BY SPAWN RATE IS ZERO
 	if (ticker % hipsterSpawnRate === 0) {
 		const x = Math.max(100, Math.random() * canvas.width - 100)
 		const y = Math.max(100, Math.random() * canvas.height - 100)
 		hipsters.push(new Hipster(randomFromArray(arrayRandomHipster), x, y))
 		// hipsterSpawnRate = randomIntFromRange(75, 100)
+	}
+
+	// SPAWNS RANDOM SUPPLY ON SCREEN
+	// WHEN TICKER DIVIDED BY SPAWN RATE IS ZERO
+	if (ticker % supplySpawnRate === 0) {
+		const x = Math.max(100, Math.random() * canvas.width - 100)
+		const y = Math.max(100, Math.random() * canvas.height - 100)
+		supplies.push(new Supply(randomFromArray(arrayRandomSupplies), x, y))
+		// supplySpawnRate = randomIntFromRange(75, 100)
 	}
 
 }
