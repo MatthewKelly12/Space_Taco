@@ -51,7 +51,7 @@ let focalLength = 400
 //     if (event.deltaY < 0) {
 //         focalLength *= 1.1;
 //     } else {
-//         focalLength /= 1.1
+//         focalLength /= 1.1;
 //     }
 //     if (focalLength >= innerWidth) {
 //         focalLength = innerWidth - 20;
@@ -60,7 +60,7 @@ let focalLength = 400
 //     }
 // }, false)
 
-// Slight background movement on mousemove
+// // Slight background movement on mousemove
 // window.addEventListener('mousemove', function (event) {
 //     mouse.x = event.x;
 //     mouse.y = event.y;
@@ -81,21 +81,28 @@ addEventListener('mousemove', function (event) {
 	mouse.y = event.y
 })
 
+
+
+
+
+
+
+
 // TACO TRUCK
 let imgTacoTruck = new Image()
 imgTacoTruck.src = "./tacoTruck.png"
-
-
 
 // Shooter, img of Taco Truck attached to mouse
 function tacoTruck() {
     c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120)
 }
 
-// Variable to show score on screen
+
+
+// VARIABLE TO HOLD SCORE
 let score = 0;
 
-// Draws 'Score:' text
+// DRAWS 'Score:' TEXT
 function scoreText() {
 	c.beginPath()
 	c.font = "40pt Comic Sans MS"
@@ -104,7 +111,7 @@ function scoreText() {
 	c.fill()
 }
 
-// Draws actual score number, starts at 0
+// DRAWS ACTUAL SCORE NUMBER, STARTS AT 0
 function scoreNumber () {
 	c.beginPath()
 	c.font = "40pt Comic Sans MS"
@@ -114,15 +121,31 @@ function scoreNumber () {
 }
 
 
+// VARIABLES TO HOLD TIME
+let seconds = 60
+let minutes = 2
+
+// DRAWS MINUTES
+function minute () {
+	c.beginPath()
+	c.font = "40pt Comic Sans MS"
+	c.fillStyle = "white"
+	c.fillText(minutes + ":", 850, 600, 300)
+	c.fill()
+}
+
+// DRAWS SECONDS
+function second () {
+	c.beginPath()
+	c.font = "40pt Comic Sans MS"
+	c.fillStyle = "white"
+	c.fillText(seconds, 900, 600, 300)
+	c.fill()
+}
 
 
 
-
-
-
-
-
-// Stars
+// STARS
 let numStar = 2000;
 let stars = [];
 
@@ -141,7 +164,7 @@ function Star(x, y, z) {
 	this.starY = undefined
 }
 
-	// Function that draws the stars
+// DRAWS STARS
 Star.prototype.draw = function() {
 	c.beginPath();
 	c.arc(this.starX, this.starY, this.starRadius, TWO_PI, false);
@@ -150,7 +173,8 @@ Star.prototype.draw = function() {
 	c.closePath();
 }
 
-	// Adds travel and depth to stars with focal length formula
+// CALLS DRAW FUNCTION
+// ADDS MOVEMENT AND DEPTH TO STARS WITH FOCAL LENGTH FORMULA
 Star.prototype.update = function () {
 	this.draw();
 
@@ -318,11 +342,6 @@ hipsterTwo.src = "./hipsterTwo.png"
 let hipsterThree = new Image()
 hipsterThree.src = "./hipsterThree.png"
 
-// Creates new Hipster objects and sets to variables
-// let hipOne = new Hipster(hipsterOne, 200, 400)
-// let hipTwo = new Hipster(hipsterTwo, 500, 200)
-// let hipThree = new Hipster(hipsterThree, 600, 500)
-// console.log(hipOne)
 
 // Pushes all Hipster objects into array of hipsters
 let hipsters = []
@@ -336,15 +355,79 @@ arrayRandomHipster.push(hipsterThree)
 
 
 
+// POWER UPS, SUPPLIES
+// Create a Supply object for supply images
+function Supply(imgSupply, x, y) {
+	this.imgSupply = imgSupply
+	this.x = x
+	this.y = y
+	this.z = 3000
+	this.w = 100
+	this.h = 100
+	this.dx = 0
+	this.dy = 0
+	this.dz = -8
+	this.supplyW = undefined
+	this.supplyH = undefined
+	this.supplyX = undefined
+	this.supplyY = undefined
+}
+
+// Draws images of Supply object
+Supply.prototype.draw = function () {
+	c.drawImage(this.imgSupply, this.supplyX, this.supplyY, this.supplyW, this.supplyH)
+}
+
+// Calls draw function and updates position and velocity of supply
+Supply.prototype.update = function () {
+
+	this.supplyX = (this.x - centerX) * (focalLength / this.z)
+    this.supplyX += centerX;
+
+    this.supplyY = (this.y - centerY) * (focalLength / this.z)
+    this.supplyY += centerY;
+
+	this.supplyW = this.w * (focalLength / this.z);
+	this.supplyH = this.h * (focalLength / this.z);
+
+    // this.supplyX += this.dx;
+    // this.supplyY += this.dy;
+
+    this.z += this.dz;
+
+    // if (this.z <= 0) {
+    //     this.z = parseInt(innerWidth)
+	// }
+	this.draw()
+}
+
+
+// Sets image of hot sauce to a variable
+let hotSauce = new Image()
+hotSauce.src = "./hotSauce.png"
+
+// Supplies array will hold all animated supply images
+// arrayRandomHipster will hold all supply images until spawned for animation
+let supplies = []
+let arrayRandomSupplies = []
+
+arrayRandomSupplies.push(hotSauce)
+
+
+
+
+
+
 
 
 
 
 let hipsterSpawnRate = 100
+let supplySpawnRate = 50
 let ticker = 0
 
 
-// function to animate objects
+// FUNCTION TO ANIMATE OBJECTS
 function animate() {
     requestAnimationFrame(animate);
     c.fillStyle = "#000";
@@ -352,7 +435,7 @@ function animate() {
 
 
 
-	// Draws Stars
+	// DRAWS STARS
 	for (let i in stars) {
         stars[i].update();
 	}
@@ -370,41 +453,103 @@ function animate() {
 		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach((taco, index) => {
 		if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && (hipster.z - taco.z) <= 10) {
+
 			// REMOVE HIPSTERS FROM SCREEN/ARRAY
 			// IF COLLIDED WITH TACOS
 			hipsters.splice(index, 1);
+
 			// SCORE GOES UP UPON COLLISION
 			score += 5
 		}
 		})
 	})
 
-	// function starShip draws green circle attached to mouse
+
+	// // SUPPLIES
+	supplies.forEach((supply, index) => {
+		supply.update()
+		// REMOVE SUPPLIES FROM SCREEN/ARRAY IF
+		// Z COORDINATE IS PASSED FRONT OF SCREEN
+		if(supply.z < 0) {
+			supplies.splice(index, 1)
+		}
+
+		// COLLISION DETECTION BETWEEN SUPPLIES AND MOUSE/TACO TRUCK
+		if (distance(supply.x, supply.y, mouse.x - 60, mouse.y - 60) < 200 && supply.z  <= 400) {
+
+			// REMOVE supplies FROM SCREEN/ARRAY
+			// IF COLLIDED WITH MOUSE/TACO TRUCK
+			supplies.splice(index, 1);
+			console.log('HOT SAUCED!')
+
+			// SCORE GOES UP UPON COLLISION
+			score += 10
+		}
+
+	})
+
+	// TACO TRUCK IMG attached to mouse
 	tacoTruck()
 
-	// Draws "Score:"
+	// DRAWS "Score:""
 	scoreText()
 
-	// Draws score number
+	// DRAWS SCORE NUMBER
 	scoreNumber()
 
 
-	// Shoots tacos
+	// SHOOTS TACOS
 	tacos.forEach((taco, index) => {
 		taco.update()
+
+		// REMOVES TACOS FROM SCREEN/ARRAY
+		// WHEN Z DEPTH IS MORE THAN 6000
 		if(taco.z > 6000) {
 			tacos.splice(index, 1)
 		}
 	})
 
+	// DRAWS MINUTES
+	minute()
 
+	// DRAWS SECONDS
+	second()
+
+	// SETS TIMER RATE FOR SECONDS TO DECREASE
+	if (ticker % 60 === 0) {
+	seconds -= 1
+	}
+
+	// DECREASES MINUTES WHEN SECONDS EQUAL ZERO
+	if (seconds === 0) {
+		minutes += -1
+	}
+
+	// TIME STOP
+	if (minutes === 0 && seconds === 0) {
+		minutes = 0
+		seconds = 0
+	}
+
+	// TICKER GOES UP EACH ANIMATION FRAME
 	ticker++
+
+	// SPAWNS RANDOM HIPSTER ON SCREEN
+	// WHEN TICKER DIVIDED BY SPAWN RATE IS ZERO
 	if (ticker % hipsterSpawnRate === 0) {
-	// 	// const radius = 12
 		const x = Math.max(100, Math.random() * canvas.width - 100)
 		const y = Math.max(100, Math.random() * canvas.height - 100)
 		hipsters.push(new Hipster(randomFromArray(arrayRandomHipster), x, y))
 		// hipsterSpawnRate = randomIntFromRange(75, 100)
+	}
+
+	// SPAWNS RANDOM SUPPLY ON SCREEN
+	// WHEN TICKER DIVIDED BY SPAWN RATE IS ZERO
+	if (ticker % supplySpawnRate === 0) {
+		const x = Math.max(100, Math.random() * canvas.width - 100)
+		const y = Math.max(100, Math.random() * canvas.height - 100)
+		supplies.push(new Supply(randomFromArray(arrayRandomSupplies), x, y))
+		// supplySpawnRate = randomIntFromRange(75, 100)
 	}
 
 }
