@@ -526,7 +526,7 @@ function animate() {
 		}
 
 		// COLLISION DETECTION BETWEEN SUPPLIES AND MOUSE/TACO TRUCK
-		if (distance(supply.x, supply.y, mouse.x - 60, mouse.y - 60) < 200 && supply.z - mouse.z <= 40) {
+		if (distance(supply.x, supply.y, mouse.x - 60, mouse.y - 60) < 200 && supply.z <= 400) {
 
 			// REMOVE supplies FROM SCREEN/ARRAY
 			// IF COLLIDED WITH MOUSE/TACO TRUCK
