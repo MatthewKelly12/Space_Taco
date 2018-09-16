@@ -205,7 +205,7 @@ function scoreNumber() {
 }
 
 // VARIABLES TO HOLD TIME
-var seconds = 60;
+var seconds = 12;
 var minutes = 2;
 
 // DRAWS MINUTES
@@ -468,17 +468,39 @@ Supply.prototype.update = function () {
 	this.draw();
 };
 
-// Sets image of hot sauce to a variable
+// END SUPPLIES
+
+
+// Sets image of supplies to a variable
 var hotSauce = new Image();
 hotSauce.src = "./hotSauce.png";
+
+var cheese = new Image();
+cheese.src = "./cheese.png";
+
+var avacado = new Image();
+avacado.src = "./avacado.png";
+
+var margarita = new Image();
+margarita.src = "./margarita.png";
+
+var peppers = new Image();
+peppers.src = "./peppers.png";
+
+var tomato = new Image();
+tomato.src = "./tomato.png";
 
 // Supplies array will hold all animated supply images
 // arrayRandomHipster will hold all supply images until spawned for animation
 var supplies = [];
 var arrayRandomSupplies = [];
 
-arrayRandomSupplies.push(hotSauce);
+arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato);
 
+// SETS RATES TO SPAWN IMAGES OF HIPSTERS
+// AND SUPPLIES ON SCREEN
+// TICKER IS USED AS A COUNTER++ AND
+// SPAWN RATES DEPEND ON TICKER
 var hipsterSpawnRate = 100;
 var supplySpawnRate = 50;
 var ticker = 0;

@@ -122,8 +122,9 @@ function scoreNumber () {
 
 
 // VARIABLES TO HOLD TIME
-let seconds = 60
+let seconds = 12
 let minutes = 2
+
 
 // DRAWS MINUTES
 function minute () {
@@ -281,10 +282,6 @@ window.addEventListener('click', function () {
 
 
 
-
-
-
-
 // HIPSTERS
 // Create a Hipster object for hipster images
 function Hipster(imgHipster, x, y) {
@@ -401,30 +398,47 @@ Supply.prototype.update = function () {
 	this.draw()
 }
 
+// END SUPPLIES
 
-// Sets image of hot sauce to a variable
+
+// Sets image of supplies to a variable
 let hotSauce = new Image()
 hotSauce.src = "./hotSauce.png"
+
+let cheese = new Image()
+cheese.src = "./cheese.png"
+
+let avacado = new Image()
+avacado.src = "./avacado.png"
+
+let margarita = new Image()
+margarita.src = "./margarita.png"
+
+let peppers = new Image()
+peppers.src = "./peppers.png"
+
+let tomato = new Image()
+tomato.src = "./tomato.png"
+
 
 // Supplies array will hold all animated supply images
 // arrayRandomHipster will hold all supply images until spawned for animation
 let supplies = []
 let arrayRandomSupplies = []
 
-arrayRandomSupplies.push(hotSauce)
+arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato)
 
-
-
-
-
-
-
-
-
-
+// SETS RATES TO SPAWN IMAGES OF HIPSTERS
+// AND SUPPLIES ON SCREEN
+// TICKER IS USED AS A COUNTER++ AND
+// SPAWN RATES DEPEND ON TICKER
 let hipsterSpawnRate = 100
 let supplySpawnRate = 50
 let ticker = 0
+
+
+
+
 
 
 // FUNCTION TO ANIMATE OBJECTS
