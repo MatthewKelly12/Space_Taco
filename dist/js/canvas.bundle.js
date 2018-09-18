@@ -169,6 +169,7 @@ var focalLength = 400;
 //     }
 // })
 
+// ATTACHES X & Y COORDINATES OF THE SCROLL TO OUR MOUSE OBJECT
 addEventListener('mousemove', function (event) {
 	mouse.x = event.x;
 	mouse.y = event.y;
@@ -205,8 +206,8 @@ function scoreNumber() {
 }
 
 // VARIABLES TO HOLD TIME
-var seconds = 12;
-var minutes = 2;
+var seconds = 3;
+var minutes = 0;
 
 // DRAWS MINUTES
 function minute() {
@@ -223,6 +224,15 @@ function second() {
 	c.font = "40pt Comic Sans MS";
 	c.fillStyle = "white";
 	c.fillText(seconds, 900, 600, 300);
+	c.fill();
+}
+
+// GAME OVER
+function gameOver() {
+	c.beginPath();
+	c.font = "150pt Comic Sans MS";
+	c.fillStyle = "white";
+	c.fillText('GAME OVER', 400, 400, 500);
 	c.fill();
 }
 
@@ -524,6 +534,7 @@ function animate() {
 		if (hipster.z < 0) {
 			hipsters.splice(index, 1);
 		}
+
 		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach(function (taco, index) {
 			if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && hipster.z - taco.z <= 10) {
@@ -587,7 +598,10 @@ function animate() {
 	second();
 
 	// SETS TIMER RATE FOR SECONDS TO DECREASE
-	if (ticker % 60 === 0) {
+	if (seconds < 0) {
+		seconds = "00";
+	} else if (ticker % 60 === 0) {
+
 		seconds -= 1;
 	}
 
@@ -597,9 +611,11 @@ function animate() {
 	}
 
 	// TIME STOP
-	if (minutes === 0 && seconds === 0) {
+	if (minutes < 0 && seconds === 0) {
 		minutes = 0;
 		seconds = 0;
+		ticker = 0;
+		gameOver();
 	}
 
 	// TICKER GOES UP EACH ANIMATION FRAME

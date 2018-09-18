@@ -76,6 +76,7 @@ let focalLength = 400
 //     }
 // })
 
+// ATTACHES X & Y COORDINATES OF THE SCROLL TO OUR MOUSE OBJECT
 addEventListener('mousemove', function (event) {
 	mouse.x = event.x
 	mouse.y = event.y
@@ -122,8 +123,8 @@ function scoreNumber () {
 
 
 // VARIABLES TO HOLD TIME
-let seconds = 12
-let minutes = 2
+let seconds = 3
+let minutes = 0
 
 
 // DRAWS MINUTES
@@ -144,6 +145,14 @@ function second () {
 	c.fill()
 }
 
+// GAME OVER
+function gameOver () {
+	c.beginPath()
+	c.font = "150pt Comic Sans MS"
+	c.fillStyle = "white"
+	c.fillText('GAME OVER', 400, 400, 500)
+	c.fill()
+}
 
 
 // STARS
@@ -440,7 +449,6 @@ let ticker = 0
 
 
 
-
 // FUNCTION TO ANIMATE OBJECTS
 function animate() {
     requestAnimationFrame(animate);
@@ -464,6 +472,7 @@ function animate() {
 		if(hipster.z < 0) {
 			hipsters.splice(index, 1)
 		}
+
 		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach((taco, index) => {
 		if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && (hipster.z - taco.z) <= 10) {
@@ -488,6 +497,8 @@ function animate() {
 			supplies.splice(index, 1)
 		}
 
+
+
 		// COLLISION DETECTION BETWEEN SUPPLIES AND MOUSE/TACO TRUCK
 		if (distance(supply.x, supply.y, mouse.x - 60, mouse.y - 60) < 200 && supply.z  <= 400) {
 
@@ -501,6 +512,8 @@ function animate() {
 		}
 
 	})
+
+
 
 	// TACO TRUCK IMG attached to mouse
 	tacoTruck()
@@ -530,8 +543,11 @@ function animate() {
 	second()
 
 	// SETS TIMER RATE FOR SECONDS TO DECREASE
-	if (ticker % 60 === 0) {
-	seconds -= 1
+	if (seconds < 0) {
+		seconds = "00"
+	} else if (ticker % 60 === 0){
+
+		seconds -= 1
 	}
 
 	// DECREASES MINUTES WHEN SECONDS EQUAL ZERO
@@ -540,9 +556,12 @@ function animate() {
 	}
 
 	// TIME STOP
-	if (minutes === 0 && seconds === 0) {
+	if (minutes < 0 && seconds === 0) {
 		minutes = 0
 		seconds = 0
+		ticker = 0
+		gameOver()
+
 	}
 
 	// TICKER GOES UP EACH ANIMATION FRAME
