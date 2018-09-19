@@ -2,14 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Canvas Template</title>
+	<title>Canvas Template</title>
+	<link rel="stylesheet" href="styles.css">
     <style>
         body {
-            margin: 0;
-        }
+			margin: 0;
+			background-color: black
+		}
+		#startScreen {
+			background-color: black;
+		}
+
+		#logo {
+    		display: block;
+    		margin-left: auto;
+			margin-right: auto;
+			width: 400px;
+			height: 400px;
+		}
+		h1 {
+    		color: white;
+			font-family: "Comic Sans MS", cursive, sans-serif;
+			/* display: block; */
+    		/* margin-left: auto; */
+			/* margin-right: auto; */
+			font-size: 80px;
+			padding-left: 570px;
+
+		}
+
+
     </style>
 </head>
 <body>
-    <canvas></canvas>
+	<div id="startScreen">
+		<img id="logo" src="tacoTruck.png" >
+		<h1 id='buttStart'>Start</h1>
+	</div>
+	<canvas id='gameCanvas'></canvas>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </body>
 </html>

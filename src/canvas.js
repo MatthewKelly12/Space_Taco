@@ -123,7 +123,7 @@ function scoreNumber () {
 
 
 // VARIABLES TO HOLD TIME
-let seconds = 3
+let seconds = 60
 let minutes = 0
 
 
@@ -352,12 +352,11 @@ hipsterThree.src = "./hipsterThree.png"
 // Pushes all Hipster objects into array of hipsters
 let hipsters = []
 let arrayRandomHipster = []
-// hipsters.push(hipOne)
-arrayRandomHipster.push(hipsterOne)
-arrayRandomHipster.push(hipsterTwo)
-arrayRandomHipster.push(hipsterThree)
+
 
 // END HIPSTERS
+
+
 
 
 
@@ -435,7 +434,7 @@ tomato.src = "./tomato.png"
 let supplies = []
 let arrayRandomSupplies = []
 
-arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato)
+
 
 // SETS RATES TO SPAWN IMAGES OF HIPSTERS
 // AND SUPPLIES ON SCREEN
@@ -448,6 +447,44 @@ let ticker = 0
 
 
 
+// INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
+function init() {
+	// PUSHES SUPPLIES INTO ANIMATED ARRAY
+	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato)
+
+	arrayRandomHipster.push(hipsterOne)
+	arrayRandomHipster.push(hipsterTwo)
+	arrayRandomHipster.push(hipsterThree)
+}
+
+// LOGO
+let logo = new Image()
+logo.src = "./tacoTruck.png"
+
+// DRAWS LOGO
+// Shooter, img of Taco Truck attached to mouse
+// function drawLogo() {
+	// let d = c.drawImage(logo, 400, 30, 500, 400)
+// }
+
+// let logoArray = []
+// logoArray.push()
+
+init()
+
+// STARTING THE GAME
+// HIDE CANVAS, SHOW START SCREEN
+$("#gameCanvas").hide()
+let butt = document.getElementById('buttStart')
+butt.onclick = ( function () {
+	$("#gameCanvas").empty()
+	$("#startScreen").hide()
+	$("#gameCanvas").show()
+	console.log('clicked')
+	animate()
+}
+)
+
 
 // FUNCTION TO ANIMATE OBJECTS
 function animate() {
@@ -457,10 +494,14 @@ function animate() {
 
 
 
+
+
 	// DRAWS STARS
 	for (let i in stars) {
-        stars[i].update();
+		stars[i].update();
+
 	}
+
 
 
 
@@ -587,5 +628,5 @@ function animate() {
 
 }
 
-animate();
+
 
