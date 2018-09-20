@@ -206,7 +206,7 @@ function scoreNumber() {
 }
 
 // VARIABLES TO HOLD TIME
-var seconds = 3;
+var seconds = 60;
 var minutes = 0;
 
 // DRAWS MINUTES
@@ -424,10 +424,6 @@ hipsterThree.src = "./hipsterThree.png";
 // Pushes all Hipster objects into array of hipsters
 var hipsters = [];
 var arrayRandomHipster = [];
-// hipsters.push(hipOne)
-arrayRandomHipster.push(hipsterOne);
-arrayRandomHipster.push(hipsterTwo);
-arrayRandomHipster.push(hipsterThree);
 
 // END HIPSTERS
 
@@ -505,8 +501,6 @@ tomato.src = "./tomato.png";
 var supplies = [];
 var arrayRandomSupplies = [];
 
-arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato);
-
 // SETS RATES TO SPAWN IMAGES OF HIPSTERS
 // AND SUPPLIES ON SCREEN
 // TICKER IS USED AS A COUNTER++ AND
@@ -514,6 +508,43 @@ arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato);
 var hipsterSpawnRate = 100;
 var supplySpawnRate = 50;
 var ticker = 0;
+
+// INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
+function init() {
+	// PUSHES SUPPLIES INTO ANIMATED ARRAY
+	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato);
+
+	arrayRandomHipster.push(hipsterOne);
+	arrayRandomHipster.push(hipsterTwo);
+	arrayRandomHipster.push(hipsterThree);
+}
+
+// LOGO
+var logo = new Image();
+logo.src = "./tacoTruck.png";
+
+// DRAWS LOGO
+// Shooter, img of Taco Truck attached to mouse
+// function drawLogo() {
+// let d = c.drawImage(logo, 400, 30, 500, 400)
+// }
+
+// let logoArray = []
+// logoArray.push()
+
+init();
+
+// STARTING THE GAME
+// HIDE CANVAS, SHOW START SCREEN
+$("#gameCanvas").hide();
+var butt = document.getElementById('buttStart');
+butt.onclick = function () {
+	$("#gameCanvas").empty();
+	$("#startScreen").hide();
+	$("#gameCanvas").show();
+	console.log('clicked');
+	animate();
+};
 
 // FUNCTION TO ANIMATE OBJECTS
 function animate() {
@@ -639,8 +670,6 @@ function animate() {
 		// supplySpawnRate = randomIntFromRange(75, 100)
 	}
 }
-
-animate();
 
 /***/ })
 
