@@ -429,6 +429,10 @@ let tomato = new Image()
 tomato.src = "./tomato.png"
 
 
+
+
+
+
 // Supplies array will hold all animated supply images
 // arrayRandomHipster will hold all supply images until spawned for animation
 let supplies = []
@@ -440,8 +444,8 @@ let arrayRandomSupplies = []
 // AND SUPPLIES ON SCREEN
 // TICKER IS USED AS A COUNTER++ AND
 // SPAWN RATES DEPEND ON TICKER
-let hipsterSpawnRate = 100
-let supplySpawnRate = 50
+let hipsterSpawnRate = 50
+let supplySpawnRate = 100
 let ticker = 0
 
 

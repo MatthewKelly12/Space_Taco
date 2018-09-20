@@ -505,8 +505,8 @@ var arrayRandomSupplies = [];
 // AND SUPPLIES ON SCREEN
 // TICKER IS USED AS A COUNTER++ AND
 // SPAWN RATES DEPEND ON TICKER
-var hipsterSpawnRate = 100;
-var supplySpawnRate = 50;
+var hipsterSpawnRate = 50;
+var supplySpawnRate = 100;
 var ticker = 0;
 
 // INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
