@@ -512,7 +512,7 @@ var ticker = 0;
 // INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
 function init() {
 	// PUSHES SUPPLIES INTO ANIMATED ARRAY
-	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato);
+	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato, margarita);
 
 	arrayRandomHipster.push(hipsterOne);
 	arrayRandomHipster.push(hipsterTwo);

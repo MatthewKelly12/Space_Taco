@@ -83,20 +83,15 @@ addEventListener('mousemove', function (event) {
 })
 
 
-
-
-
-
-
-
 // TACO TRUCK
 let imgTacoTruck = new Image()
 imgTacoTruck.src = "./tacoTruck.png"
 
 // Shooter, img of Taco Truck attached to mouse
 function tacoTruck() {
-    c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120)
+	c.drawImage(imgTacoTruck, mouse.x - 60, mouse.y - 60, 120, 120)
 }
+
 
 
 
@@ -454,7 +449,7 @@ let ticker = 0
 // INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
 function init() {
 	// PUSHES SUPPLIES INTO ANIMATED ARRAY
-	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato)
+	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato, margarita)
 
 	arrayRandomHipster.push(hipsterOne)
 	arrayRandomHipster.push(hipsterTwo)

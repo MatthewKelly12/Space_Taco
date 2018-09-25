@@ -1,4 +1,11 @@
-import mouse from './canvas'
+// import mouse from './canvas'
+
+
+// module.exports = {tacoTruck}
+
+
+
+
 // let mouse = {
 //     x: undefined,
 //     y: undefined
@@ -12,5 +19,3 @@ import mouse from './canvas'
 //     c.fillStyle = "green";
 //     c.fill();
 // }
-
-module.exports = {tacoTruck}
