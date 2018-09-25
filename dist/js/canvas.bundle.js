@@ -169,6 +169,7 @@ var focalLength = 400;
 //     }
 // })
 
+// ATTACHES X & Y COORDINATES OF THE SCROLL TO OUR MOUSE OBJECT
 addEventListener('mousemove', function (event) {
 	mouse.x = event.x;
 	mouse.y = event.y;
@@ -206,7 +207,7 @@ function scoreNumber() {
 
 // VARIABLES TO HOLD TIME
 var seconds = 60;
-var minutes = 2;
+var minutes = 0;
 
 // DRAWS MINUTES
 function minute() {
@@ -223,6 +224,15 @@ function second() {
 	c.font = "40pt Comic Sans MS";
 	c.fillStyle = "white";
 	c.fillText(seconds, 900, 600, 300);
+	c.fill();
+}
+
+// GAME OVER
+function gameOver() {
+	c.beginPath();
+	c.font = "150pt Comic Sans MS";
+	c.fillStyle = "white";
+	c.fillText('GAME OVER', 400, 400, 500);
 	c.fill();
 }
 
@@ -414,10 +424,6 @@ hipsterThree.src = "./hipsterThree.png";
 // Pushes all Hipster objects into array of hipsters
 var hipsters = [];
 var arrayRandomHipster = [];
-// hipsters.push(hipOne)
-arrayRandomHipster.push(hipsterOne);
-arrayRandomHipster.push(hipsterTwo);
-arrayRandomHipster.push(hipsterThree);
 
 // END HIPSTERS
 
@@ -468,20 +474,77 @@ Supply.prototype.update = function () {
 	this.draw();
 };
 
-// Sets image of hot sauce to a variable
+// END SUPPLIES
+
+
+// Sets image of supplies to a variable
 var hotSauce = new Image();
 hotSauce.src = "./hotSauce.png";
+
+var cheese = new Image();
+cheese.src = "./cheese.png";
+
+var avacado = new Image();
+avacado.src = "./avacado.png";
+
+var margarita = new Image();
+margarita.src = "./margarita.png";
+
+var peppers = new Image();
+peppers.src = "./peppers.png";
+
+var tomato = new Image();
+tomato.src = "./tomato.png";
 
 // Supplies array will hold all animated supply images
 // arrayRandomHipster will hold all supply images until spawned for animation
 var supplies = [];
 var arrayRandomSupplies = [];
 
-arrayRandomSupplies.push(hotSauce);
-
-var hipsterSpawnRate = 100;
-var supplySpawnRate = 50;
+// SETS RATES TO SPAWN IMAGES OF HIPSTERS
+// AND SUPPLIES ON SCREEN
+// TICKER IS USED AS A COUNTER++ AND
+// SPAWN RATES DEPEND ON TICKER
+var hipsterSpawnRate = 50;
+var supplySpawnRate = 100;
 var ticker = 0;
+
+// INIT FUNCTION TO ANIMATE HIPSTERS AND SUPPLIES
+function init() {
+	// PUSHES SUPPLIES INTO ANIMATED ARRAY
+	arrayRandomSupplies.push(hotSauce, cheese, avacado, peppers, tomato, margarita);
+
+	arrayRandomHipster.push(hipsterOne);
+	arrayRandomHipster.push(hipsterTwo);
+	arrayRandomHipster.push(hipsterThree);
+}
+
+// LOGO
+var logo = new Image();
+logo.src = "./tacoTruck.png";
+
+// DRAWS LOGO
+// Shooter, img of Taco Truck attached to mouse
+// function drawLogo() {
+// let d = c.drawImage(logo, 400, 30, 500, 400)
+// }
+
+// let logoArray = []
+// logoArray.push()
+
+init();
+
+// STARTING THE GAME
+// HIDE CANVAS, SHOW START SCREEN
+$("#gameCanvas").hide();
+var butt = document.getElementById('buttStart');
+butt.onclick = function () {
+	$("#gameCanvas").empty();
+	$("#startScreen").hide();
+	$("#gameCanvas").show();
+	console.log('clicked');
+	animate();
+};
 
 // FUNCTION TO ANIMATE OBJECTS
 function animate() {
@@ -502,6 +565,7 @@ function animate() {
 		if (hipster.z < 0) {
 			hipsters.splice(index, 1);
 		}
+
 		// COLLISION DETECTION BETWEEN HIPSTERS AND TACOS
 		tacos.forEach(function (taco, index) {
 			if (distance(hipster.x, hipster.y, taco.x, taco.y) < 80 && hipster.z - taco.z <= 10) {
@@ -565,7 +629,10 @@ function animate() {
 	second();
 
 	// SETS TIMER RATE FOR SECONDS TO DECREASE
-	if (ticker % 60 === 0) {
+	if (seconds < 0) {
+		seconds = "00";
+	} else if (ticker % 60 === 0) {
+
 		seconds -= 1;
 	}
 
@@ -575,9 +642,11 @@ function animate() {
 	}
 
 	// TIME STOP
-	if (minutes === 0 && seconds === 0) {
+	if (minutes < 0 && seconds === 0) {
 		minutes = 0;
 		seconds = 0;
+		ticker = 0;
+		gameOver();
 	}
 
 	// TICKER GOES UP EACH ANIMATION FRAME
@@ -601,8 +670,6 @@ function animate() {
 		// supplySpawnRate = randomIntFromRange(75, 100)
 	}
 }
-
-animate();
 
 /***/ })
 
